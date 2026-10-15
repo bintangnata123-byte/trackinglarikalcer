@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html lang="id" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stride 10K Challenge - Reni Mailinar</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #07090e;
+            color: #f3f4f6;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d131f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-3 md:p-6">
+<div class="max-w-[1400px] mx-auto space-y-4">
+<!-- HEADER / NAVBAR -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center bg-[#0d131f] border border-gray-800/80 px-5 py-3.5 rounded-2xl gap-4">
+<div class="flex items-center gap-6">
+<span class="bg-[#ccff00] text-black font-extrabold px-3 py-1.5 rounded-xl text-xs tracking-wider flex items-center gap-1.5 shadow-sm shadow-[#ccff00]/10">
+                    ⚡ STRIDE 10K CHALLENGE
+                </span>
+<nav class="hidden md:flex items-center gap-6 text-xs text-gray-300 font-medium">
+<a class="text-[#ccff00]" href="#">Ringkasan Progres</a>
+<a class="hover:text-white transition-colors" href="#riwayat-section">Riwayat Sesi</a>
+<a class="hover:text-white transition-colors" href="#">Peringkat Tantangan</a>
+</nav>
+</div>
+<div class="flex items-center gap-3 bg-[#131c2e] px-3.5 py-1.5 rounded-xl border border-gray-800">
+<div class="text-right">
+<p class="text-xs font-bold text-white">Reni Mailinar</p>
+<p class="text-[10px] text-gray-400 font-mono" id="nav-target-subtitle">#BIB-10492 • KATEGORI 10K OPEN</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-[#ccff00] flex items-center justify-center text-black font-extrabold text-xs">RM</div>
+</div>
+</header>
+<!-- BANNER PROFILE & INFO -->
+<div class="bg-gradient-to-r from-[#0d131f] via-[#101726] to-[#0d131f] border border-gray-800/80 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl">
+<div class="space-y-2">
+<div class="flex flex-wrap items-center gap-2">
+<span class="bg-[#162032] text-gray-300 text-[11px] px-2.5 py-1 rounded-lg font-mono border border-gray-800">STRIDE INDONESIA • OFFICIAL</span>
+<span class="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-medium flex items-center gap-1">
+                        ⚡ TANTANGAN TERVERIFIKASI • Pelacakan GPS Aktif
+                    </span>
+</div>
+<div class="flex items-baseline gap-3 pt-1">
+<h1 class="text-3xl font-extrabold text-white tracking-tight">Reni Mailinar</h1>
+<span class="text-xs font-mono text-gray-400 bg-[#162032] px-2.5 py-1 rounded-lg border border-gray-800">#BIB-10492</span>
+</div>
+<p class="text-xs text-gray-400 flex items-center gap-1.5 pt-0.5">
+<span>📍</span> Virtual <span id="banner-target-label">10K</span> Finisher Challenge • Gelombang B (Oktober 2026)
+                </p>
+</div>
+<div>
+<a class="bg-[#ccff00] hover:bg-[#b8e600] text-black font-extrabold px-5 py-3.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-lg shadow-[#ccff00]/10 tracking-wide cursor-pointer inline-flex" href="#form-catat">
+<span>➕ Catat Lari Hari Ini</span>
+</a>
+</div>
+</div>
+<!-- STATS GRID -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 1. TOTAL TARGET (INTERAKTIF & EDITABLE) -->
+<div class="bg-[#0d131f] border border-gray-800/80 p-5 rounded-2xl relative flex flex-col justify-between group hover:border-[#ccff00]/40 transition-colors">
+<div>
+<div class="flex justify-between items-center mb-2">
+<p class="text-[11px] font-bold tracking-wider text-gray-400">TOTAL TARGET</p>
+<button class="text-[10px] bg-[#162032] hover:bg-[#1f2c44] text-[#ccff00] border border-[#ccff00]/30 px-2 py-0.5 rounded-lg flex items-center gap-1 transition-all" id="btn-toggle-target-edit">
+                            ✏️ <span>Ubah</span>
+</button>
+</div>
+<!-- Display View -->
+<div class="flex items-baseline gap-1.5" id="target-display-view">
+<span class="text-4xl font-extrabold text-white" id="stat-total-target">10.0</span>
+<span class="text-base font-bold text-gray-400">KM</span>
+</div>
+<!-- Input Edit Mode (Interactive) -->
+<div class="hidden mt-1" id="target-edit-view">
+<div class="flex items-center gap-2">
+<input class="w-24 bg-[#131c2e] border border-[#ccff00] rounded-xl px-2.5 py-1.5 text-white font-mono font-bold text-sm focus:outline-none focus:ring-1 focus:ring-[#ccff00]" id="input-edit-target" max="100" min="1" step="0.1" type="number" value="10.0"/>
+<button class="bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-extrabold px-2.5 py-1.5 rounded-lg transition-all" id="btn-save-target">Simpan</button>
+<button class="text-gray-400 hover:text-white text-xs px-1" id="btn-cancel-target">Batal</button>
+</div>
+</div>
+</div>
+<div class="space-y-1 mt-4 pt-3 border-t border-gray-800/50 text-[11px] text-gray-400">
+<p id="target-desc-label">Kategori Stride Target KM</p>
+<p>🛡️ Jarak Sertifikasi Standar PASI</p>
+</div>
+</div>
+<!-- 2. AKUMULASI JARAK -->
+<div class="bg-[#0d131f] border border-gray-800/80 p-5 rounded-2xl relative flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<p class="text-[11px] font-bold tracking-wider text-gray-400">AKUMULASI JARAK</p>
+<span class="bg-[#ccff00]/10 text-[#ccff00] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-[#ccff00]/20" id="stat-badge-percent">95.9% Selesai</span>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-4xl font-extrabold text-[#ccff00]" id="stat-accum-km">9.59</span>
+<span class="text-base font-bold text-gray-400">KM</span>
+</div>
+</div>
+<div class="space-y-2 mt-4 pt-3 border-t border-gray-800/50">
+<p class="text-[11px] text-[#ccff00] font-medium truncate" id="stat-last-run-note">⚡ +5.09 KM sesi terakhir (13 Okt 2026)</p>
+<div class="w-full bg-gray-800/80 h-1.5 rounded-full overflow-hidden">
+<div class="bg-[#ccff00] h-full transition-all duration-500 rounded-full" id="stat-accum-bar" style="width: 95.9%;"></div>
+</div>
+</div>
+</div>
+<!-- 3. SISA TARGET -->
+<div class="bg-[#0d131f] border border-gray-800/80 p-5 rounded-2xl relative flex flex-col justify-between">
+<div>
+<p class="text-[11px] font-bold tracking-wider text-gray-400 mb-2">SISA TARGET</p>
+<div class="flex items-baseline gap-1.5">
+<span class="text-4xl font-extrabold text-white" id="stat-remaining-km">0.41</span>
+<span class="text-base font-bold text-gray-400">KM</span>
+</div>
+</div>
+<div class="space-y-1 mt-4 pt-3 border-t border-gray-800/50 text-[11px]">
+<p class="text-amber-400 font-medium" id="stat-remaining-note">Hanya tersisa 410 meter lagi!</p>
+<p class="text-gray-400" id="stat-countdown-status">Countdown garis finis dibuka!</p>
+</div>
+</div>
+<!-- 4. PACE & FREKUENSI -->
+<div class="bg-[#0d131f] border border-gray-800/80 p-5 rounded-2xl relative flex flex-col justify-between">
+<div>
+<p class="text-[11px] font-bold tracking-wider text-gray-400 mb-2">PACE &amp; FREKUENSI</p>
+<div class="flex items-baseline gap-1.5">
+<span class="text-3xl font-extrabold text-white" id="stat-avg-pace">10'24"</span>
+<span class="text-xs font-bold text-gray-400">/KM</span>
+</div>
+</div>
+<div class="space-y-1 mt-4 pt-3 border-t border-gray-800/50 text-[11px] text-gray-400">
+<p id="stat-sessions-summary">3 sesi tercatat (Total 1j 39m 49d)</p>
+<p>Stabilitas Pace: <span class="text-[#ccff00] font-semibold" id="stat-stability">94.8% Terjaga</span></p>
+</div>
+</div>
+</div>
+<!-- MAIN SECTION: FULL-WIDTH TELEMETRY & SPLIT PACE (KLAIM MEDALI REMOVED AS REQUESTED) -->
+<div class="bg-[#0d131f] border border-gray-800/80 p-6 md:p-7 rounded-2xl space-y-6 shadow-xl">
+<!-- Header bar telemetri -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+<div>
+<span class="text-[10px] font-bold tracking-wider text-gray-400 uppercase">VISUAL LINTASAN TELEMETRI REAL-TIME</span>
+<h2 class="text-xl font-extrabold text-white mt-0.5" id="telemetry-title">Progres Target Finisher 10.00 KM</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-[#ccff00] bg-[#162032] px-3.5 py-1.5 rounded-xl border border-gray-800 font-semibold flex items-center gap-1.5" id="telemetry-badge-ratio">
+<span class="w-2 h-2 rounded-full bg-[#ccff00] animate-pulse"></span>
+<span id="telemetry-ratio-text">9.59 KM / 10.00 KM (95.9%)</span>
+</span>
+</div>
+</div>
+<!-- Motivational Alert Banner -->
+<div class="bg-[#131c2e] border border-amber-500/20 text-amber-300 text-xs px-4 py-3 rounded-xl flex items-center justify-between gap-3" id="telemetry-alert">
+<div class="flex items-center gap-2.5">
+<span class="text-base">⚡</span>
+<span id="telemetry-alert-text">Tinggal <strong class="text-white">0.41 KM (410 meter)</strong> lagi untuk menyelesaikan seluruh target lari!</span>
+</div>
+<span class="text-[10px] bg-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider hidden sm:inline-block" id="telemetry-status-pill">Dalam Jangkauan</span>
+</div>
+<!-- Dynamic Track Progress Bar -->
+<div class="relative py-7 px-3 md:px-5 bg-[#0a0e17] rounded-xl border border-gray-800/50">
+<!-- Track Line Background -->
+<div class="absolute top-[45px] left-6 right-6 h-2 bg-gray-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-[#84cc16] to-[#ccff00] transition-all duration-700 ease-out rounded-full shadow-lg shadow-[#ccff00]/20" id="telemetry-fill-bar" style="width: 95.9%;"></div>
+</div>
+<!-- Checkpoints -->
+<div class="relative flex justify-between text-xs text-gray-400">
+<div class="text-center group">
+<div class="w-5 h-5 rounded-full bg-[#ccff00] border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300 ring-2 ring-[#ccff00]/40" id="node-start"></div>
+<p class="text-white font-bold text-[11px]">Start</p>
+<p class="text-[10px] text-gray-400 font-mono">0.0 KM</p>
+</div>
+<div class="text-center group">
+<div class="w-5 h-5 rounded-full bg-[#ccff00] border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300 ring-2 ring-[#ccff00]/40" id="node-warmup"></div>
+<p class="text-white font-bold text-[11px]" id="label-warmup">Warm-up</p>
+<p class="text-[10px] text-gray-400 font-mono" id="km-warmup">2.5 KM</p>
+</div>
+<div class="text-center group">
+<div class="w-5 h-5 rounded-full bg-[#ccff00] border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300 ring-2 ring-[#ccff00]/40" id="node-halfway"></div>
+<p class="text-white font-bold text-[11px]" id="label-halfway">Halfway</p>
+<p class="text-[10px] text-gray-400 font-mono" id="km-halfway">5.0 KM</p>
+</div>
+<div class="text-center group">
+<div class="w-5 h-5 rounded-full bg-[#ccff00] border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300 ring-2 ring-[#ccff00]/40" id="node-thewall"></div>
+<p class="text-white font-bold text-[11px]" id="label-thewall">The Wall</p>
+<p class="text-[10px] text-gray-400 font-mono" id="km-thewall">7.5 KM</p>
+</div>
+<div class="text-center group">
+<div class="w-5 h-5 rounded-full bg-gray-600 border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300" id="node-finisher"></div>
+<p class="text-gray-400 font-bold text-[11px]" id="label-finisher">Finisher</p>
+<p class="text-[10px] text-gray-400 font-mono" id="km-finisher">10.0 KM</p>
+</div>
+</div>
+</div>
+<!-- Dynamic Split Pace Cards Across Sessions -->
+<div class="pt-2 border-t border-gray-800/80">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+<span class="text-[11px] font-bold tracking-wider text-gray-400 uppercase">KONSISTENSI SPLIT PACE TIAP SESI RIWAYAT</span>
+<span class="text-xs text-[#ccff00] font-medium bg-[#162032] px-3 py-1 rounded-lg border border-gray-800" id="best-pace-badge">
+                        ⚡ Tercepat: Sesi 3 (9'07"/km)
+                    </span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="split-pace-container">
+<!-- Injected dynamically via JavaScript -->
+</div>
+</div>
+</div>
+<!-- FORM & RIWAYAT -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- FORMULIR INPUT SESI (5 cols on lg) -->
+<div class="lg:col-span-5 bg-[#0d131f] border border-gray-800/80 p-6 rounded-2xl space-y-4 flex flex-col justify-between" id="form-catat">
+<div class="space-y-4">
+<div class="flex items-center gap-2.5">
+<span class="text-[#ccff00] text-lg bg-[#162032] p-2 rounded-xl border border-gray-800">📝</span>
+<div>
+<h3 class="text-lg font-extrabold text-white">Formulir Catat Lari Harian</h3>
+<p class="text-xs text-gray-400 mt-0.5">Masukkan data sesi lari harian Anda untuk kalkulasi otomatis.</p>
+</div>
+</div>
+<form class="space-y-3.5 text-xs pt-1" id="form-add-session" onsubmit="event.preventDefault(); handleAddSession();">
+<div>
+<label class="block text-gray-400 font-semibold mb-1.5 text-[11px]">TANGGAL LARI</label>
+<input class="w-full bg-[#131c2e] border border-gray-700/70 rounded-xl px-3.5 py-3 text-white focus:outline-none focus:border-[#ccff00] font-mono text-xs cursor-pointer" id="form-input-date" required="" style="color-scheme: dark;" type="date"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1.5">
+<label class="block text-gray-400 font-semibold text-[11px]">JARAK LARI (KM)</label>
+<span class="text-amber-400 font-medium text-[11px]" id="form-remaining-indicator">Sisa Target: 0.41 KM</span>
+</div>
+<div class="relative">
+<input class="w-full bg-[#131c2e] border border-gray-700/70 rounded-xl px-3.5 py-3 text-white focus:outline-none focus:border-[#ccff00] font-mono text-xs pr-12" id="form-input-distance" max="100" min="0.05" required="" step="0.01" type="number" value="0.41"/>
+<span class="absolute right-3.5 top-3 text-[11px] font-bold text-gray-400 pointer-events-none">KM</span>
+</div>
+</div>
+<div>
+<label class="block text-gray-400 font-semibold mb-1.5 text-[11px]">DURASI LARI (MENIT &amp; DETIK)</label>
+<div class="grid grid-cols-2 gap-3">
+<div class="flex items-center bg-[#131c2e] border border-gray-700/70 rounded-xl px-3.5 py-2 focus-within:border-[#ccff00]">
+<input class="w-full bg-transparent text-white font-mono font-bold focus:outline-none text-xs [appearance:textfield] [&amp;::-webkit-outer-spin-button]:appearance-none [&amp;::-webkit-inner-spin-button]:appearance-none" id="form-input-min" max="300" min="0" required="" type="number" value="4"/>
+<span class="text-gray-400 ml-auto text-[10px] font-semibold pl-2 pointer-events-none">MNT</span>
+</div>
+<div class="flex items-center bg-[#131c2e] border border-gray-700/70 rounded-xl px-3.5 py-2 focus-within:border-[#ccff00]">
+<input class="w-full bg-transparent text-white font-mono font-bold focus:outline-none text-xs [appearance:textfield] [&amp;::-webkit-outer-spin-button]:appearance-none [&amp;::-webkit-inner-spin-button]:appearance-none" id="form-input-sec" max="59" min="0" required="" type="number" value="15"/>
+<span class="text-gray-400 ml-auto text-[10px] font-semibold pl-2 pointer-events-none">DTK</span>
+</div>
+</div>
+<!-- Live calculated pace preview -->
+<div class="mt-2 text-[10px] text-gray-400 flex items-center justify-between px-1">
+<span>Pace Sesi Ini: <strong class="text-[#ccff00] font-mono" id="form-pace-preview">10'22"/km</strong></span>
+<span class="text-gray-500">Auto Dihitung</span>
+</div>
+</div>
+<div class="pt-3 border-t border-gray-800/80">
+<button class="w-full bg-[#ccff00] hover:bg-[#b8e600] active:scale-[0.99] text-black font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-[#ccff00]/10 flex items-center justify-center gap-2 text-xs" type="submit">
+<span>⚡ Submit &amp; Tambah Akumulasi</span>
+</button>
+</div>
+</form>
+</div>
+<div class="text-[10px] text-gray-500 pt-3 border-t border-gray-800/60 flex items-center justify-between">
+<span>* Data tersinkronisasi otomatis ke dashboard</span>
+<span class="text-[#ccff00] font-mono">STATUS: SIAP</span>
+</div>
+</div>
+<!-- RIWAYAT LARI HARIAN (7 cols on lg) -->
+<div class="lg:col-span-7 bg-[#0d131f] border border-gray-800/80 p-6 rounded-2xl flex flex-col justify-between" id="riwayat-section">
+<div>
+<div class="flex flex-wrap justify-between items-center mb-5 gap-2">
+<div class="flex items-center gap-2.5">
+<span class="text-[#ccff00] text-lg bg-[#162032] p-2 rounded-xl border border-gray-800">⏱️</span>
+<div>
+<h3 class="text-lg font-extrabold text-white">Riwayat Lari Harian</h3>
+<p class="text-[11px] text-gray-400">Database tersimpan aktif dan terkalibrasi.</p>
+</div>
+</div>
+<span class="text-[11px] font-mono text-[#ccff00] bg-[#162032] px-3 py-1 rounded-lg border border-gray-800 font-bold" id="history-badge-count">3 SESI TERCATAT</span>
+</div>
+<div class="overflow-x-auto -mx-2 sm:mx-0">
+<table class="w-full text-left text-xs min-w-[550px]">
+<thead>
+<tr class="text-gray-500 border-b border-gray-800 text-[10px]">
+<th class="pb-3 font-bold pl-2">SESI / TANGGAL</th>
+<th class="pb-3 font-bold">JARAK</th>
+<th class="pb-3 font-bold">DURASI</th>
+<th class="pb-3 font-bold">AVG. PACE</th>
+<th class="pb-3 font-bold">TOTAL AKUMULASI</th>
+<th class="pb-3 font-bold text-center pr-2">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-800/40" id="history-table-body">
+<!-- Rendered dynamically by JavaScript -->
+</tbody>
+</table>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-gray-800/80 flex flex-wrap justify-between items-center text-[11px] text-gray-400 gap-2">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#ccff00]"></span>
+                        Sinkronisasi Otomatis: Garmin, Apple Health &amp; Strava
+                    </span>
+<span class="text-gray-300 font-mono" id="last-sync-time">Baru saja</span>
+</div>
+</div>
+</div>
+</div>
+<!-- JAVASCRIPT STATE ENGINE & REACTIVITY -->
+<script>
+        // State awal
+        let totalTargetKm = 10.0;
+
+        // Database array riwayat lari (3 sesi awal yang realistis dan matematis akurat)
+        // Sesi 1: 1.50 KM, 28:27 (1707 detik) -> Pace 18'58"/km
+        // Sesi 2: 3.00 KM, 37:21 (2241 detik) -> Pace 12'27"/km
+        // Sesi 3: 5.09 KM, 46:29 (2789 detik) -> Pace 9'07"/km
+        // Total akumulasi = 9.59 KM, Total durasi = 6737 detik (1j 52m 17s ~ rata-rata pace 11'42")
+        let runSessions = [
+            { id: 1, date: "2026-10-11", label: "Hari ke-1", distance: 1.50, durationSec: (18 * 60 + 58) * 1.5 }, // 28m 27s
+            { id: 2, date: "2026-10-12", label: "Hari ke-2", distance: 3.00, durationSec: (12 * 60 + 27) * 3 },   // 37m 21s
+            { id: 3, date: "2026-10-13", label: "Hari ke-3", distance: 5.09, durationSec: (9 * 60 + 7) * 5.09 }   // 46m 25s
+        ];
+
+        // Format detik ke String Menit:Detik
+        function formatDuration(totalSec) {
+            totalSec = Math.round(totalSec);
+            const hrs = Math.floor(totalSec / 3600);
+            const mins = Math.floor((totalSec % 3600) / 60);
+            const secs = totalSec % 60;
+            const pad = (n) => String(n).padStart(2, '0');
+
+            if (hrs > 0) {
+                return `${hrs}j ${pad(mins)}m ${pad(secs)}d`;
+            }
+            return `${pad(mins)}:${pad(secs)}`;
+        }
+
+        function formatDurationClock(totalSec) {
+            totalSec = Math.round(totalSec);
+            const mins = Math.floor(totalSec / 60);
+            const secs = totalSec % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // Kalkulasi Pace format Menit'Detik"/km
+        function calculatePace(distanceKm, durationSec) {
+            if (!distanceKm || distanceKm <= 0 || !durationSec || durationSec <= 0) return "-";
+            const secPerKm = durationSec / distanceKm;
+            const mins = Math.floor(secPerKm / 60);
+            const secs = Math.round(secPerKm % 60);
+            return `${mins}'${String(secs).padStart(2, '0')}"`;
+        }
+
+        // Format tanggal ke Bahasa Indonesia singkat
+        function formatDateIndo(dateStr) {
+            try {
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                    return `${parseInt(parts[2], 10)} ${months[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+                }
+            } catch(e) {}
+            return dateStr;
+        }
+
+        // Update seluruh komponen UI secara reaktif
+        function renderDashboard() {
+            // 1. Akumulasi Total KM & Total Waktu
+            const accumKm = runSessions.reduce((acc, s) => acc + s.distance, 0);
+            const totalDurationSec = runSessions.reduce((acc, s) => acc + s.durationSec, 0);
+            const remainingKm = Math.max(0, totalTargetKm - accumKm);
+            const percent = totalTargetKm > 0 ? Math.min(100, (accumKm / totalTargetKm) * 100) : 0;
+            const formattedPercent = percent.toFixed(1).replace('.0', '');
+
+            // Rata-rata pace
+            const avgPace = calculatePace(accumKm, totalDurationSec);
+
+            // Update Total Target Card
+            document.getElementById('stat-total-target').textContent = totalTargetKm.toFixed(1);
+            document.getElementById('nav-target-subtitle').textContent = `#BIB-10492 • KATEGORI ${Math.round(totalTargetKm)}K OPEN`;
+            document.getElementById('banner-target-label').textContent = `${Math.round(totalTargetKm)}K`;
+            document.getElementById('target-desc-label').textContent = `Kategori Stride ${Math.round(totalTargetKm)}K Challenge`;
+
+            // Update Akumulasi Card
+            document.getElementById('stat-accum-km').textContent = accumKm.toFixed(2);
+            document.getElementById('stat-badge-percent').textContent = `${formattedPercent}% Selesai`;
+            document.getElementById('stat-accum-bar').style.width = `${Math.min(100, percent)}%`;
+
+            // Note sesi terakhir
+            if (runSessions.length > 0) {
+                const lastSession = runSessions[runSessions.length - 1];
+                document.getElementById('stat-last-run-note').textContent = `⚡ +${lastSession.distance.toFixed(2)} KM sesi terakhir (${formatDateIndo(lastSession.date)})`;
+            } else {
+                document.getElementById('stat-last-run-note').textContent = `Belum ada sesi tercatat`;
+            }
+
+            // Update Sisa Target Card
+            document.getElementById('stat-remaining-km').textContent = remainingKm.toFixed(2);
+            const remainingMeters = Math.round(remainingKm * 1000);
+            const remainingNoteElem = document.getElementById('stat-remaining-note');
+            const countdownElem = document.getElementById('stat-countdown-status');
+
+            if (remainingKm <= 0) {
+                remainingNoteElem.textContent = "🎉 Target Tantangan Tercapai!";
+                remainingNoteElem.className = "text-[#ccff00] font-bold";
+                countdownElem.textContent = "Selamat! Anda adalah Finisher Resmi!";
+            } else if (remainingMeters <= 1000) {
+                remainingNoteElem.textContent = `Hanya tersisa ${remainingMeters} meter lagi!`;
+                remainingNoteElem.className = "text-amber-400 font-medium";
+                countdownElem.textContent = "Countdown garis finis dibuka!";
+            } else {
+                remainingNoteElem.textContent = `Tersisa ${remainingKm.toFixed(2)} KM untuk dituntaskan.`;
+                remainingNoteElem.className = "text-amber-400 font-medium";
+                countdownElem.textContent = "Tetap konsisten jaga irama lari!";
+            }
+
+            // Update Pace & Frekuensi Card
+            document.getElementById('stat-avg-pace').textContent = avgPace;
+            document.getElementById('stat-sessions-summary').textContent = `${runSessions.length} sesi tercatat (Total ${formatDuration(totalDurationSec)})`;
+
+            // Update Telemetri Track Title & Ratio
+            document.getElementById('telemetry-title').textContent = `Progres Target Finisher ${totalTargetKm.toFixed(2)} KM`;
+            document.getElementById('telemetry-ratio-text').textContent = `${accumKm.toFixed(2)} KM / ${totalTargetKm.toFixed(2)} KM (${formattedPercent}%)`;
+            document.getElementById('telemetry-fill-bar').style.width = `${Math.min(100, percent)}%`;
+
+            // Telemetri Alert Message
+            const alertText = document.getElementById('telemetry-alert-text');
+            const statusPill = document.getElementById('telemetry-status-pill');
+            if (remainingKm <= 0) {
+                alertText.innerHTML = `🌟 <strong>Luar biasa!</strong> Anda telah menuntaskan seluruh <strong>${totalTargetKm.toFixed(2)} KM</strong> target tantangan!`;
+                statusPill.textContent = "GOAL COMPLETED";
+                statusPill.className = "text-[10px] bg-[#ccff00]/20 text-[#ccff00] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider";
+            } else {
+                alertText.innerHTML = `Tinggal <strong class="text-white">${remainingKm.toFixed(2)} KM (${remainingMeters} meter)</strong> lagi untuk menyelesaikan seluruh target lari!`;
+                statusPill.textContent = percent >= 75 ? "Dalam Jangkauan" : "Sedang Berlangsung";
+                statusPill.className = "text-[10px] bg-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider";
+            }
+
+            // Update Dynamic Checkpoint Milestones on Telemetry track
+            updateCheckpoints(accumKm, totalTargetKm);
+
+            // Update Split Pace Container
+            renderSplitPaceCards();
+
+            // Update Form Remaining Indicator & Input default
+            const formRemainingInd = document.getElementById('form-remaining-indicator');
+            if (remainingKm > 0) {
+                formRemainingInd.textContent = `Sisa Target: ${remainingKm.toFixed(2)} KM`;
+                formRemainingInd.className = "text-amber-400 font-medium text-[11px]";
+                // Set default input jarak ke sisa target jika sisa target realistis
+                const distInput = document.getElementById('form-input-distance');
+                if (!distInput.matches(':focus')) {
+                    distInput.value = remainingKm.toFixed(2);
+                }
+            } else {
+                formRemainingInd.textContent = `Target Finis Terpenuhi! (+Bonus KM)`;
+                formRemainingInd.className = "text-[#ccff00] font-medium text-[11px]";
+            }
+            updateFormPacePreview();
+
+            // Update Riwayat Lari Table
+            renderHistoryTable();
+        }
+
+        // Kalkulasi checkpoints dinamis
+        function updateCheckpoints(accumKm, totalKm) {
+            const p25 = totalKm * 0.25;
+            const p50 = totalKm * 0.50;
+            const p75 = totalKm * 0.75;
+            const p100 = totalKm;
+
+            document.getElementById('km-warmup').textContent = `${p25.toFixed(1)} KM`;
+            document.getElementById('km-halfway').textContent = `${p50.toFixed(1)} KM`;
+            document.getElementById('km-thewall').textContent = `${p75.toFixed(1)} KM`;
+            document.getElementById('km-finisher').textContent = `${p100.toFixed(1)} KM`;
+
+            // Node colors
+            setNodeState('node-start', true);
+            setNodeState('node-warmup', accumKm >= p25);
+            setNodeState('node-halfway', accumKm >= p50);
+            setNodeState('node-thewall', accumKm >= p75);
+            setNodeState('node-finisher', accumKm >= p100);
+
+            // Labels
+            document.getElementById('label-thewall').textContent = accumKm >= p75 ? "The Wall (Tuntas)" : "The Wall";
+            document.getElementById('label-finisher').textContent = accumKm >= p100 ? "Finisher (Lengkap)" : (accumKm > 0 ? `Sisa ${(Math.max(0, totalKm - accumKm)).toFixed(2)} KM` : "Finisher");
+            document.getElementById('label-finisher').className = accumKm >= p100 ? "text-[#ccff00] font-bold text-[11px]" : "text-gray-400 font-bold text-[11px]";
+        }
+
+        function setNodeState(nodeId, isActive) {
+            const el = document.getElementById(nodeId);
+            if (isActive) {
+                el.className = "w-5 h-5 rounded-full bg-[#ccff00] border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300 ring-2 ring-[#ccff00]/40";
+            } else {
+                el.className = "w-5 h-5 rounded-full bg-gray-600 border-4 border-[#0a0e17] mx-auto mb-2 shadow transition-all duration-300 ring-0";
+            }
+        }
+
+        // Render Split Pace Card Bar
+        function renderSplitPaceCards() {
+            const container = document.getElementById('split-pace-container');
+            container.innerHTML = "";
+
+            if (runSessions.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-gray-500">Belum ada riwayat split sesi</div>`;
+                document.getElementById('best-pace-badge').textContent = "-";
+                return;
+            }
+
+            // Cari pace tercepat (detik per km terkecil)
+            let minPaceSec = Infinity;
+            let bestSessionIdx = -1;
+
+            const paces = runSessions.map((s, idx) => {
+                const paceSec = s.durationSec / s.distance;
+                if (paceSec < minPaceSec) {
+                    minPaceSec = paceSec;
+                    bestSessionIdx = idx;
+                }
+                return {
+                    paceStr: calculatePace(s.distance, s.durationSec),
+                    paceSec: paceSec,
+                    idx: idx + 1,
+                    dateStr: formatDateIndo(s.date)
+                };
+            });
+
+            const bestSession = runSessions[bestSessionIdx];
+            document.getElementById('best-pace-badge').innerHTML = `⚡ Tercepat: Sesi ${bestSessionIdx + 1} (${calculatePace(bestSession.distance, bestSession.durationSec)}/km)`;
+
+            paces.forEach((item, index) => {
+                const isBest = index === bestSessionIdx;
+                const isLatest = index === runSessions.length - 1;
+
+                const card = document.createElement('div');
+                card.className = `bg-[#131c2e] p-3 rounded-xl border text-center space-y-1.5 transition-all ${
+                    isBest 
+                        ? 'border-[#ccff00]/50 shadow-md shadow-[#ccff00]/5' 
+                        : isLatest 
+                        ? 'border-gray-700' 
+                        : 'border-gray-800'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-center gap-1">
+                        <p class="text-xs ${isBest ? 'font-extrabold text-[#ccff00]' : 'font-bold text-gray-300'}">${item.paceStr}</p>
+                        ${isBest ? '<span class="text-[9px]">⚡</span>' : ''}
+                    </div>
+                    <div class="w-full ${isBest ? 'bg-[#ccff00]' : isLatest ? 'bg-teal-500' : 'bg-cyan-600'} h-1.5 rounded-full"></div>
+                    <p class="text-[10px] text-gray-400 truncate">S${item.idx} (${item.dateStr.split(' ')[0]} ${item.dateStr.split(' ')[1] || ''})</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render Tabel Riwayat
+        function renderHistoryTable() {
+            const tbody = document.getElementById('history-table-body');
+            tbody.innerHTML = "";
+
+            document.getElementById('history-badge-count').textContent = `${runSessions.length} SESI TERCATAT`;
+
+            // Running accumulation calculation forward
+            let runAccum = 0;
+            const computedRows = runSessions.map((session, i) => {
+                runAccum += session.distance;
+                const remainingAtStep = Math.max(0, totalTargetKm - runAccum);
+                return {
+                    session,
+                    accumAtThisStep: runAccum,
+                    remainingAtStep: remainingAtStep,
+                    index: i + 1
+                };
+            });
+
+            // Tampilkan dengan sesi paling baru di atas
+            computedRows.slice().reverse().forEach((row) => {
+                const { session, accumAtThisStep, remainingAtStep, index } = row;
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-[#131c2e]/60 transition-colors";
+
+                const paceStr = calculatePace(session.distance, session.durationSec);
+                const isFinalGoal = accumAtThisStep >= totalTargetKm;
+
+                tr.innerHTML = `
+                    <td class="py-3.5 pl-2">
+                        <p class="font-bold text-white flex items-center gap-1.5">
+                            Hari ke-${index}
+                            ${index === runSessions.length ? '<span class="bg-[#ccff00]/10 text-[#ccff00] text-[9px] px-1.5 py-0.2 rounded font-mono">TERKINI</span>' : ''}
+                        </p>
+                        <p class="text-[10px] text-gray-400 font-mono">${formatDateIndo(session.date)}</p>
+                    </td>
+                    <td class="py-3.5 font-mono text-white font-semibold">${session.distance.toFixed(2)} KM</td>
+                    <td class="py-3.5 font-mono text-gray-300">${formatDurationClock(session.durationSec)}</td>
+                    <td class="py-3.5 font-mono text-white">${paceStr}/km</td>
+                    <td class="py-3.5">
+                        <p class="font-extrabold ${isFinalGoal ? 'text-[#ccff00]' : 'text-white'}">${accumAtThisStep.toFixed(2)} KM</p>
+                        <p class="text-[10px] ${remainingAtStep <= 0 ? 'text-[#ccff00]' : 'text-gray-400'}">
+                            ${remainingAtStep <= 0 ? 'Finis Tercapai!' : `Sisa ${remainingAtStep.toFixed(2)} KM`}
+                        </p>
+                    </td>
+                    <td class="py-3.5 text-center pr-2">
+                        <span class="bg-[#ccff00]/10 text-[#ccff00] border border-[#ccff00]/20 px-2 py-0.5 rounded text-[10px] font-bold">🟢 VALID</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Live Pace Preview di form input
+        function updateFormPacePreview() {
+            const dist = parseFloat(document.getElementById('form-input-distance').value) || 0;
+            const min = parseInt(document.getElementById('form-input-min').value, 10) || 0;
+            const sec = parseInt(document.getElementById('form-input-sec').value, 10) || 0;
+            const totalSec = (min * 60) + sec;
+
+            const preview = document.getElementById('form-pace-preview');
+            if (dist > 0 && totalSec > 0) {
+                preview.textContent = `${calculatePace(dist, totalSec)}/km`;
+            } else {
+                preview.textContent = "-";
+            }
+        }
+
+        // Handler Penambahan Sesi Baru
+        function handleAddSession() {
+            const dateInput = document.getElementById('form-input-date').value;
+            const distInput = parseFloat(document.getElementById('form-input-distance').value);
+            const minInput = parseInt(document.getElementById('form-input-min').value, 10) || 0;
+            const secInput = parseInt(document.getElementById('form-input-sec').value, 10) || 0;
+
+            if (!dateInput) {
+                alert("Harap pilih tanggal lari.");
+                return;
+            }
+            if (!distInput || distInput <= 0) {
+                alert("Masukkan jarak lari yang valid (> 0 KM).");
+                return;
+            }
+            const totalDurationSec = (minInput * 60) + secInput;
+            if (totalDurationSec <= 0) {
+                alert("Masukkan durasi lari yang valid.");
+                return;
+            }
+
+            // Tambahkan ke array state
+            const newIndex = runSessions.length + 1;
+            runSessions.push({
+                id: Date.now(),
+                date: dateInput,
+                label: `Hari ke-${newIndex}`,
+                distance: parseFloat(distInput.toFixed(2)),
+                durationSec: totalDurationSec
+            });
+
+            // Update waktu sinkronisasi
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB`;
+            document.getElementById('last-sync-time').textContent = `${timeStr} (Baru saja)`;
+
+            // Re-render seluruh dashboard
+            renderDashboard();
+
+            // Beri feedback visual cepat
+            const submitBtn = document.querySelector('#form-add-session button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span>✅ Sesi Berhasil Ditambahkan!</span>';
+            submitBtn.classList.add('bg-white');
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.classList.remove('bg-white');
+            }, 1400);
+        }
+
+        // Event listener saat DOM dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set tanggal hari ini pada input tanggal
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('form-input-date').value = `${yyyy}-${mm}-${dd}`;
+
+            // Listeners untuk perubahan input di form agar pace preview update langsung
+            ['form-input-distance', 'form-input-min', 'form-input-sec'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateFormPacePreview);
+            });
+
+            // Toggle Edit Target Button
+            const toggleEditBtn = document.getElementById('btn-toggle-target-edit');
+            const displayView = document.getElementById('target-display-view');
+            const editView = document.getElementById('target-edit-view');
+            const inputEditTarget = document.getElementById('input-edit-target');
+            const saveTargetBtn = document.getElementById('btn-save-target');
+            const cancelTargetBtn = document.getElementById('btn-cancel-target');
+
+            toggleEditBtn.addEventListener('click', () => {
+                displayView.classList.add('hidden');
+                editView.classList.remove('hidden');
+                inputEditTarget.value = totalTargetKm;
+                inputEditTarget.focus();
+            });
+
+            cancelTargetBtn.addEventListener('click', () => {
+                editView.classList.add('hidden');
+                displayView.classList.remove('hidden');
+            });
+
+            saveTargetBtn.addEventListener('click', () => {
+                const val = parseFloat(inputEditTarget.value);
+                if (val && val > 0) {
+                    totalTargetKm = parseFloat(val.toFixed(2));
+                    renderDashboard();
+                    editView.classList.add('hidden');
+                    displayView.classList.remove('hidden');
+                } else {
+                    alert("Target KM harus lebih besar dari 0");
+                }
+            });
+
+            // Allow Enter key on target input
+            inputEditTarget.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    saveTargetBtn.click();
+                } else if (e.key === 'Escape') {
+                    cancelTargetBtn.click();
+                }
+            });
+
+            // Inisialisasi awal render
+            renderDashboard();
+        });
+    </script>
+</body></html>
